@@ -4,6 +4,7 @@ import { errorMiddleware } from './middlewares/error.middleware';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import https from 'https';
+import http from 'http';
 import { loadCertificate } from './middlewares/certificat.middleware';
 import { config } from './config/config';
 import session from 'express-session';
@@ -16,7 +17,8 @@ import userRoutes from './routes/user.route'
 import { User } from './interfaces/user.interface';
 import { UserModel } from './models/user.model';
 import bcrypt from 'bcryptjs';
-import { logger } from './utils/logger.ts'
+import mongoose from 'mongoose';
+import { connect } from 'http2';
 
 const app = express();
 // Middleware de parsing du JSON
@@ -112,16 +114,18 @@ const swaggerDocs = swaggerJsdoc(swaggerOptions);
 let certificatOptions = loadCertificate();
 
 // Servir la documentation Swagger via '/api-docs'
-app.use('/v1', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Route de base
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript with Express! Connexion sécurisée.');
 });
 
-app.use('/', productRoutes);
-app.use('/', authRoutes);
-app.use('/', userRoutes)
+app.use('/v1', productRoutes);
+app.use('/v1', authRoutes);
+
+// Only available on test
+app.use('/v1', userRoutes)
 
 app.use(errorMiddleware);
 
@@ -155,12 +159,12 @@ async function populateProducts() {
         });
 
       fs.writeFile(fileToPopulate, JSON.stringify(products, null, 2))
-      console.log("Products.json populé!")
+      console.log("v1 - Products.json populé!")
     } catch (error) {
       console.log(error) 
     }
   } else {
-    console.log("Products.json déja populé")
+    console.log("v1 - Products.json déja populé")
   }
 }
 async function populateAndHashUsers() {
@@ -200,19 +204,36 @@ async function populateAndHashUsers() {
         }));
 
       fs.writeFile(fileToPopulate, JSON.stringify(users, null, 2))
-      console.log("Users.json populé!")
+      console.log("v1 - Users.json populé!")
     } catch (error) {
       console.log(error) 
     }
   } else {
-    console.log("Users.json déja populé")
+    console.log("v1 - Users.json déja populé")
   }
 }
 populateProducts();
 populateAndHashUsers();
 
-// const httpsApp = https.createServer(certificatOptions, app);
-const httpApp = app;
+// ----- v2 Routes -----
+
+const DATABASE_URL : any = process.env.NODE_ENV == "prod" ? process.env.DATABASE_URL : process.env.DATABASE_URL_DEV
+
+async function connectToMongo() {
+  await mongoose.connect(DATABASE_URL);
+  console.log(`v2 - Connected to <${DATABASE_URL}>`);
+}
+connectToMongo();
+
+let httpApp : any
+
+if (process.env.NODE_ENV == "prod") {
+  httpApp = http.createServer(app);
+  console.log("Launching on HTTP for PROD - Should be using Render certificates")
+} else if (process.env.NODE_ENV == "dev") {
+  httpApp = https.createServer(certificatOptions, app);
+  console.log("Launching on HTTPS for DEV - Using self-signed certificates")
+}
 
 export default httpApp
 

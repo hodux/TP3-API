@@ -18,6 +18,7 @@
     "fs": "^0.0.1-security",
     "https": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.1",
     "node-rsa": "^1.1.1",
     "openssl": "^2.0.0",
     "swagger-jsdoc": "^6.2.8",
