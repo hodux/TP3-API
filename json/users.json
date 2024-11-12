@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "johndoe",
+    "email": "john@gmail.com",
+    "username": "johnd",
+    "password": "$2a$10$FkK5PG98A7L1rdLf37sEAOtpziOak9vw6zwpYhEgVHSAV.lOesMGa",
+    "role": "employee"
+  },
+  {
+    "id": 2,
+    "name": "davidmorrison",
+    "email": "morrison@gmail.com",
+    "username": "mor_2314",
+    "password": "$2a$10$mV9QBXRL5pcglwXErE7RzOBG1EEH3edVOwtTKIm8cRMds.qvvUecO",
+    "role": "employee"
+  },
+  {
+    "id": 3,
+    "name": "kevinryan",
+    "email": "kevin@gmail.com",
+    "username": "kevinryan",
+    "password": "$2a$10$84EcdnDeAhxNTkoEHUvsfuYfLHm9bJG7s0EbJR22DJMCVD7HptLbO",
+    "role": "employee"
+  },
+  {
+    "id": 4,
+    "name": "donromer",
+    "email": "don@gmail.com",
+    "username": "donero",
+    "password": "$2a$10$CWrslcDa8CaPfAo0jdvToeOKTd8rLg.liy9H3FxjxPbX/zn/2Ve4C",
+    "role": "employee"
+  },
+  {
+    "id": 5,
+    "name": "derekpowell",
+    "email": "derek@gmail.com",
+    "username": "derek",
+    "password": "$2a$10$JX7M9QVOGW.M3OCQwk0RUe6VYPoY73AemUmGzPXzEiEAuDXiweOwm",
+    "role": "employee"
+  },
+  {
+    "id": 6,
+    "name": "davidrussell",
+    "email": "david_r@gmail.com",
+    "username": "david_r",
+    "password": "$2a$10$rllrM49BdxNdveyDfxG02.gVJ13eifyQaLdqVwZjUf5NJ9buDNih2",
+    "role": "gestionnaire"
+  },
+  {
+    "id": 7,
+    "name": "miriamsnyder",
+    "email": "miriam@gmail.com",
+    "username": "snyder",
+    "password": "$2a$10$4cdKPjFpjPYyVns96pUOzeo1COidjwls/MF3Drp0NkAw8RqEcdJEm",
+    "role": "employee"
+  },
+  {
+    "id": 8,
+    "name": "williamhopkins",
+    "email": "william@gmail.com",
+    "username": "hopkins",
+    "password": "$2a$10$1JIfBbEe7KBaPd.qXxbapOzLrA279hM94XiA4hrAu3Nz56ECin2qG",
+    "role": "employee"
+  },
+  {
+    "id": 9,
+    "name": "katehale",
+    "email": "kate@gmail.com",
+    "username": "kate_h",
+    "password": "$2a$10$MM3nh82bgcnnHH17ulfXsufpWKkMrB.XznA.r1FibS/Bcl6Lh1HIW",
+    "role": "employee"
+  },
+  {
+    "id": 10,
+    "name": "jimmieklein",
+    "email": "jimmie@gmail.com",
+    "username": "jimmie_k",
+    "password": "$2a$10$TUwu5Jde9tVkHzp6IqEvZurZR70NzzKYdTYZg7cx51zSD1sy0iRvy",
+    "role": "employee"
+  }
+]

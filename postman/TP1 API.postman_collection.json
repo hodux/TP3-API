@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "86580c03-d42b-4e54-84c2-f9cbba215c3a",
+		"name": "TP1 API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38982825"
+	},
+	"item": [
+		{
+			"name": "https://localhost:3000/products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:3000/products",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:3000/products",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwicm9sZSI6Imdlc3Rpb25uYWlyZSIsImlhdCI6MTcyODg2MDA4MiwiZXhwIjoxNzI4ODYzNjgyfQ.8xaIKd6eRZ1sVW_8LAQEry_INSjmz3SVwvIFexuXAe4",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Chandail en Or\",\r\n    \"description\" : \"Chandail de Luxe en Or\",\r\n    \"category\" : \"Linge\",\r\n    \"price\" : \"59.99\",\r\n    \"quantity\" : \"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:3000/products",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:3000/products/1",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwicm9sZSI6Imdlc3Rpb25uYWlyZSIsImlhdCI6MTcyODg1NjMyMywiZXhwIjoxNzI4ODU5OTIzfQ.vJgh3wHsW07YJuwWpejHv7ZGsn3hxyBak-9Jcia5vFw",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Chandail en Or\",\r\n    \"description\" : \"Chandail de Luxe en Or\",\r\n    \"category\" : \"Linge\",\r\n    \"price\" : \"59.99\",\r\n    \"quantity\" : \"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:3000/products/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:3000/products/1",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NdiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwicm9sZSI6Imdlc3Rpb25uYWlyZSIsImlhdCI6MTcyODg2MDA4MiwiZXhwIjoxNzI4ODYzNjgyfQ.8xaIKd6eRZ1sVW_8LAQEry_INSjmz3SVwvIFexuXAe4",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:3000/products/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:3000/users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:3000/users",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:3000/users/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"david_r@gmail.com\",\r\n    \"password\": \"3478*#54\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:3000/users/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
