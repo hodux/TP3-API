@@ -1,7 +1,8 @@
-import httpApp from './app'; // Importer l'application configurée
+import app from './app';
+import {config} from "./config/config.ts"; // Importer l'application configurée
 
-const PORT = process.env.PORT || 3000;
+const PORT = config.port;
 
-httpApp.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server up successfully - Running on localhost:${PORT}`);
 });

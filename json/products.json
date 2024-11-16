@@ -158,5 +158,52 @@
     "category": "women's clothing",
     "quantity": 84,
     "price": 12.99
+  },
+  {
+    "name": "headcrab",
+    "description": "headcrab plushie",
+    "category": "plushies",
+    "quantity": 53,
+    "price": 45.99,
+    "id": 21
+  },
+  {
+    "name": "headcrab",
+    "description": "headcrab plushie",
+    "category": "plushies",
+    "quantity": 53,
+    "price": 45.99,
+    "id": 22
+  },
+  {
+    "name": "headcrab",
+    "description": "headcrab plushie",
+    "category": "plushies",
+    "quantity": 53,
+    "price": 45.99,
+    "id": 23
+  },
+  {
+    "name": "headcrab",
+    "description": "headcrab plushie",
+    "category": "plushies",
+    "quantity": 53,
+    "price": 45.99,
+    "id": 24
+  },
+  {
+    "name": "headcrab",
+    "category": "plushies",
+    "quantity": 53,
+    "price": 45.99,
+    "id": 25
+  },
+  {
+    "name": "headcrab",
+    "description": "headcrab plushie",
+    "category": "plushies",
+    "quantity": 53,
+    "price": 45.99,
+    "id": 26
   }
 ]

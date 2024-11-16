@@ -18,10 +18,10 @@ import { User } from './interfaces/user.interface';
 import { UserModel } from './models/user.model';
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
-import { connect } from 'http2';
+import v2ProductRoutes from './routes/v2/product.route.ts';
+import {MongoClient, ServerApiVersion} from "mongodb";
 
 const app = express();
-// Middleware de parsing du JSON
 app.use(express.json());
 
 // Définir les options de Swagger
@@ -113,23 +113,13 @@ const swaggerDocs = swaggerJsdoc(swaggerOptions);
 // Charger les certificats
 let certificatOptions = loadCertificate();
 
-// Servir la documentation Swagger via '/api-docs'
-app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use(errorMiddleware);
 
-// Route de base
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript with Express! Connexion sécurisée.');
 });
 
-app.use('/v1', productRoutes);
-app.use('/v1', authRoutes);
-
-// Only available on test
-app.use('/v1', userRoutes)
-
-app.use(errorMiddleware);
-
-// Fetch les produits fictifs
+// ----- v1 -----
 async function populateProducts() {
   const url = "https://fakestoreapi.com/products/"
   const fileToPopulate = "json/products.json"
@@ -215,26 +205,54 @@ async function populateAndHashUsers() {
 populateProducts();
 populateAndHashUsers();
 
-// ----- v2 Routes -----
+// Servir la documentation Swagger via '/api-docs'
+app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-const DATABASE_URL : any = process.env.NODE_ENV == "prod" ? process.env.DATABASE_URL : process.env.DATABASE_URL_DEV
+app.use('/v1', productRoutes);
+app.use('/v1', authRoutes);
+app.use('/v1', userRoutes)
 
+// ----- v2  -----
+// Use env database
+const DB_URI : any = config.isProduction ? config.databaseUrl : config.testDatabaseUrl;
+
+const client = new MongoClient(DB_URI, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 async function connectToMongo() {
-  await mongoose.connect(DATABASE_URL);
-  console.log(`v2 - Connected to <${DATABASE_URL}>`);
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    console.log(`v2 - Connected to <${DB_URI}>`);
+
+  } finally {
+    // Ensures that the client will close when you finish/error
+    // await client.close();
+    // console.log("Client closed")
+  }
 }
 connectToMongo();
 
-let httpApp : any
+app.use('/v2', v2ProductRoutes);
 
-if (process.env.NODE_ENV == "prod") {
-  httpApp = http.createServer(app);
+// http/https depending on env
+let envApp : any
+
+if (config.isProduction) {
+  envApp = http.createServer(app);
   console.log("Launching on HTTP for PROD - Should be using Render certificates")
-} else if (process.env.NODE_ENV == "dev") {
-  httpApp = https.createServer(certificatOptions, app);
+} else {
+  envApp = https.createServer(certificatOptions, app);
   console.log("Launching on HTTPS for DEV - Using self-signed certificates")
 }
 
-export default httpApp
+export default envApp
 
 
