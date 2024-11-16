@@ -7,7 +7,7 @@ const router = Router();
 
 /**
  * @openapi
- * /products:
+ * /v1/products:
  *   get:
  *     summary: Récupérer une liste de produits
  *     description: Récupérer tous les produits
@@ -54,7 +54,7 @@ router.get('/products', ProductController.getProducts);
 
 /**
  * @openapi
- * /products:
+ * /v1/products:
  *   post:
  *     summary: Ajouter un nouveau produit
  *     description: Ajouter un nouveau produit, regex inclu pour vérifier le nom, quantité et prix
@@ -103,7 +103,7 @@ router.post('/products', verifyToken, roleMiddleware(["gestionnaire"]), ProductC
 
 /**
  * @openapi
- * /products/{id}:
+ * /v1/products/{id}:
  *   put:
  *     summary: Modifier un produit existant
  *     description: Modifier les détails d'un produit existant par son identifiant, regex inclu pour vérifier le nom, quantité et prix
@@ -161,7 +161,7 @@ router.put('/products/:id', verifyToken, roleMiddleware(["gestionnaire"]), Produ
 
 /**
  * @openapi
- * /products/{id}:
+ * /v1/products/{id}:
  *   delete:
  *     summary: Supprimer un produit existant
  *     description: Supprimer un produit par son identifiant

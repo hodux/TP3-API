@@ -20,6 +20,7 @@ import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import v2ProductRoutes from './routes/v2/product.route.ts';
 import v2UserRoutes from './routes/v2/user.route.ts';
+import v2AuthRoutes from './routes/v2/auth.route.ts';
 
 const app = express();
 app.use(express.json());
@@ -97,6 +98,79 @@ const swaggerOptions = {
   apis: ['./src/routes/*.route.ts'], // Fichier où les routes de l'API sont définies
 };
 
+// Définir les options de Swagger pour API V2
+const swaggerOptionsV2 = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'TP3 - Products and User Auth API with MongoDB Atlas',
+      version: '2.0.0',
+      description: 'Un API pour gérer les produits avec authentification JWT et utilisant MongoDB',
+    },
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+      schemas: {
+        User: {
+          type: 'object',
+          properties: {
+            email: {
+              type: 'string',
+            },
+            id: {
+              type: 'number',
+            },
+            name: {
+              type: 'string',
+            },
+            password: {
+              type: 'string',
+            },
+            role: {
+              type: 'any',
+            },
+            username: {
+              type: 'string',
+            },
+          },
+          required: ['email', 'id', 'name', 'password', 'username'],
+        },
+        Product: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'number',
+            },
+            name: {
+              type: 'string',
+            },
+            description: {
+              type: 'string',
+            },
+            category: {
+              type: 'string',
+            },
+            quantity: {
+              type: 'number',
+            },
+            price: {
+              type: 'number',
+            },
+          },
+          required: ['id', 'name', 'description', 'category', 'quantity', 'price'],
+        },
+      },
+    },
+    security: [],
+  },
+  apis: ['./src/routes/v2/*.route.ts'], // Fichier où les routes de l'API sont définies
+};
+
 // Middleware de session avec la clé secrète provenant des variables de configuration
 app.use(session({
   secret: config.sessionSecret,
@@ -109,6 +183,10 @@ app.use(session({
 
 // Générer la documentation à partir des options
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
+const swaggerDocsV2 = swaggerJsdoc(swaggerOptionsV2);
+
+const swaggerUiV1 = swaggerUi.serveFiles(swaggerDocs);
+const swaggerUiV2 = swaggerUi.serveFiles(swaggerDocsV2);
 
 // Charger les certificats
 let certificatOptions = loadCertificate();
@@ -205,12 +283,10 @@ async function populateAndHashUsers() {
 populateProducts();
 populateAndHashUsers();
 
-// Servir la documentation Swagger via '/api-docs'
-app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
 app.use('/v1', productRoutes);
 app.use('/v1', authRoutes);
-app.use('/v1', userRoutes)
+app.use('/v1', userRoutes);
+app.use('/v1/api-docs', swaggerUiV1, swaggerUi.setup(swaggerDocs));
 
 // ----- v2  -----
 // Use env database
@@ -221,18 +297,18 @@ const connectDB = async () => {
     await mongoose.connect(DB_URI);
 
     mongoose.connection.on('connected', () => {
-      console.log("Mongoose connected to MongoDB Atlas.");
+      console.log("v2 - Mongoose connected to MongoDB Atlas.");
     });
 
     mongoose.connection.on('error', (err) => {
-      console.error("Mongoose connection error:", err);
+      console.error("v2 - Mongoose connection error:", err);
     });
 
     mongoose.connection.on('disconnected', () => {
-      console.warn("Mongoose disconnected from MongoDB Atlas.");
+      console.warn("v2 - Mongoose disconnected from MongoDB Atlas.");
     });
 
-    console.log("MongoDB connected to Atlas successfully.");
+    console.log("v2 - MongoDB connected to Atlas successfully.");
   } catch (error) {
     console.error("Error connecting to MongoDB Atlas:", error);
     process.exit(1);
@@ -240,8 +316,16 @@ const connectDB = async () => {
 };
 connectDB();
 
+// async function adminHashForTest() {
+//   const hashedmdp = await bcrypt.hash("abc-123", 2)
+//   console.log(hashedmdp);
+// }
+// adminHashForTest();
+
 app.use('/v2', v2ProductRoutes);
 app.use('/v2', v2UserRoutes);
+app.use('/v2', v2AuthRoutes);
+app.use('/v2/api-docs', swaggerUiV2, swaggerUi.setup(swaggerDocsV2));
 
 // http/https depending on env
 let envApp : any

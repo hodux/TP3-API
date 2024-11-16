@@ -5,7 +5,7 @@ const router = Router();
 
 /**
  * @openapi
- * /users:
+ * /v1/users:
  *   get:
  *     summary: Récupérer une liste d'utilisateurs
  *     description: Permet de récupérer tous les utilisateurs

@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { AuthService } from '../services/auth.service.ts';
-import { verifyRegex } from '../utils/regex.ts'
-import { logger } from '../utils/logger'
+import { AuthService } from '../../services/v2/auth.service.ts';
+import { verifyRegex } from '../../utils/regex.ts'
+import { logger } from '../../utils/logger'
 
 const router = Router();
 
 /**
  * @openapi
- * /v1/users/login:
+ * /v2/users/login:
  *   post:
  *     summary: Connexion d'un utilisateur
  *     description: Permet à un utilisateur de se connecter en utilisant son email et mot de passe, regex inclu pour vérifier l'email
@@ -21,11 +21,11 @@ const router = Router();
  *               email:
  *                 type: string
  *                 description: L'adresse email de l'utilisateur
- *                 example: "david_r@gmail.com"
+ *                 example: "admin@gmail.com"
  *               password:
  *                 type: string
  *                 description: Le mot de passe de l'utilisateur
- *                 example: "3478*#54"
+ *                 example: "abc-123"
  *     responses:
  *       200:
  *         description: Connexion réussie, retourne un token JWT
