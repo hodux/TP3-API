@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs'; 
+import bcrypt from 'bcryptjs';
 import { UserService } from './user.service.ts';
-import { config } from '../config/config.ts';
+import { config } from '../../config/config.ts';
 
 export class AuthService {
   public static async login(email: string, password: string): Promise<string | null> {

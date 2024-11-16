@@ -19,7 +19,7 @@ import { UserModel } from './models/user.model';
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import v2ProductRoutes from './routes/v2/product.route.ts';
-import {MongoClient, ServerApiVersion} from "mongodb";
+import v2UserRoutes from './routes/v2/user.route.ts';
 
 const app = express();
 app.use(express.json());
@@ -216,31 +216,32 @@ app.use('/v1', userRoutes)
 // Use env database
 const DB_URI : any = config.isProduction ? config.databaseUrl : config.testDatabaseUrl;
 
-const client = new MongoClient(DB_URI, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-async function connectToMongo() {
+const connectDB = async () => {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    console.log(`v2 - Connected to <${DB_URI}>`);
+    await mongoose.connect(DB_URI);
 
-  } finally {
-    // Ensures that the client will close when you finish/error
-    // await client.close();
-    // console.log("Client closed")
+    mongoose.connection.on('connected', () => {
+      console.log("Mongoose connected to MongoDB Atlas.");
+    });
+
+    mongoose.connection.on('error', (err) => {
+      console.error("Mongoose connection error:", err);
+    });
+
+    mongoose.connection.on('disconnected', () => {
+      console.warn("Mongoose disconnected from MongoDB Atlas.");
+    });
+
+    console.log("MongoDB connected to Atlas successfully.");
+  } catch (error) {
+    console.error("Error connecting to MongoDB Atlas:", error);
+    process.exit(1);
   }
-}
-connectToMongo();
+};
+connectDB();
 
 app.use('/v2', v2ProductRoutes);
+app.use('/v2', v2UserRoutes);
 
 // http/https depending on env
 let envApp : any

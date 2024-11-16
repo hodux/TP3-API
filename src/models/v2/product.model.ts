@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import {IProduct} from "../../interfaces/v2/product.interface.ts";
+import { IProduct } from "../../interfaces/v2/product.interface.ts";
 
-const productSchema = new mongoose.Schema<IProduct>({
+const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     category: { type: String, required: true },
