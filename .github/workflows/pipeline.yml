@@ -1,0 +1,26 @@
+name: Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      os:
+        description: 'system'
+        default: 'ubuntu-latest'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ${{ inputs.os || 'ubuntu-latest'}}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm test
