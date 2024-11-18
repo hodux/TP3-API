@@ -1,5 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
-import productRoutes from './routes/product.route';
+import express, { Request, Response } from 'express';
 import { errorMiddleware } from './middlewares/error.middleware';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
@@ -9,13 +8,14 @@ import { loadCertificate } from './middlewares/certificat.middleware';
 import { config } from './config/config';
 import session from 'express-session';
 import fs from "fs/promises";
-import { IProduct } from './interfaces/product.interface';
-import { Product } from './models/product.model';
+import { IProduct } from './interfaces/v1/product.interface.ts';
+import { Product } from './models/v1/product.model.ts';
 import { randomInt } from 'crypto';
-import authRoutes from './routes/auth.route'
-import userRoutes from './routes/user.route'
-import { User } from './interfaces/user.interface';
-import { UserModel } from './models/user.model';
+import v1ProductRoutes from './routes/v1/product.route.ts';
+import v1AuthRoutes from './routes/v1/auth.route.ts'
+import v1UserRoutes from './routes/v1/user.route.ts'
+import { User } from './interfaces/v1/user.interface.ts';
+import { UserModel } from './models/v1/user.model.ts';
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import v2ProductRoutes from './routes/v2/product.route.ts';
@@ -283,14 +283,14 @@ async function populateAndHashUsers() {
 populateProducts();
 populateAndHashUsers();
 
-app.use('/v1', productRoutes);
-app.use('/v1', authRoutes);
-app.use('/v1', userRoutes);
+app.use('/v1', v1ProductRoutes);
+app.use('/v1', v1AuthRoutes);
+app.use('/v1', v1UserRoutes);
 app.use('/v1/api-docs', swaggerUiV1, swaggerUi.setup(swaggerDocs));
 
 // ----- v2  -----
 // Use env database
-const DB_URI : any = config.isProduction ? config.databaseUrl : config.testDatabaseUrl;
+const DB_URI : string = config.isProduction ? config.databaseUrl : config.testDatabaseUrl;
 
 const connectDB = async () => {
   try {
@@ -316,11 +316,12 @@ const connectDB = async () => {
 };
 connectDB();
 
-// async function adminHashForTest() {
+// Database has an admin user with role "gestionnaire", it was stored manually with this hash
+// async function adminHashForTesting() {
 //   const hashedmdp = await bcrypt.hash("abc-123", 2)
 //   console.log(hashedmdp);
 // }
-// adminHashForTest();
+// adminHashForTesting();
 
 app.use('/v2', v2ProductRoutes);
 app.use('/v2', v2UserRoutes);
@@ -330,12 +331,12 @@ app.use('/v2/api-docs', swaggerUiV2, swaggerUi.setup(swaggerDocsV2));
 // http/https depending on env
 let envApp : any
 
-if (config.isProduction) {
+if (config.nodeEnv == "prod") {
   envApp = http.createServer(app);
   console.log("Launching on HTTP for PROD - Should be using Render certificates")
 } else {
   envApp = https.createServer(certificatOptions, app);
-  console.log("Launching on HTTPS for DEV - Using self-signed certificates")
+  console.log("Launching on HTTPS for DEV or TEST - Using self-signed certificates")
 }
 
 export default envApp

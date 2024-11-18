@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { AuthService } from '../../services/v2/auth.service.ts';
 import { verifyRegex } from '../../utils/regex.ts'
 import { logger } from '../../utils/logger'
+import {AuthController} from "../../controllers/v2/auth.controller.ts";
 
 const router = Router();
 
@@ -47,34 +48,7 @@ const router = Router();
  *     tags:
  *       - Authentification
  */
-router.post('/users/login', async (req, res) => {
-    if (!req.body.email || !req.body.password) {
-        logger.warn("POST Auth: Données manquantes")
-        return res.status(400).send("Données manquantes");
-    }
-
-    // regex
-    const emailRegex : RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (verifyRegex(req.body.email, emailRegex)) {
-        logger.warn("POST Auth: Format email invalid")
-        return res.status(400).send("Le format de l’adresse email pour la connexion doit être valide");
-    }
-
-    try {
-        const token = await AuthService.login(req.body.email, req.body.password);
-        
-        if (token) {
-            logger.info("POST Auth: Succès")
-            return res.status(200).json({ token });
-        } else {
-            logger.warn("POST Auth: Email or mot de passe incorrect")
-            return res.status(401).send('Email ou mot de passe incorrect');
-        }
-    } catch (error) {
-        logger.warn("POST Auth: Erreur du serveur")
-        return res.status(500).send("Erreur du serveur");
-    }
-});
+router.post('/users/login', AuthController.login);
 
 
 export default router;

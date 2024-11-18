@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { UserService } from '../services/user.service';
-import { logger } from '../utils/logger'
+import { UserService } from '../../services/v1/user.service.ts';
+import { logger } from '../../utils/logger.ts'
 
 export class UserController {
 

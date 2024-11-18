@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { ProductController } from '../controllers/product.controller';
-import { verifyToken } from '../middlewares/auth.middleware';
-import { roleMiddleware } from '../middlewares/roles.middleware';
+import { ProductController } from '../../controllers/v1/product.controller.ts';
+import { verifyToken } from '../../middlewares/auth.middleware.ts';
+import { roleMiddleware } from '../../middlewares/roles.middleware.ts';
 
 const router = Router();
 

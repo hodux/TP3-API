@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { ProductService } from '../services/product.service';
-import { verifyRegex } from '../utils/regex'
-import { logger } from '../utils/logger'
+import { ProductService } from '../../services/v1/product.service.ts';
+import { verifyRegex } from '../../utils/regex.ts'
+import { logger } from '../../utils/logger.ts'
 
 export class ProductController {
 

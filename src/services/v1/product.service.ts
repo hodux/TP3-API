@@ -1,4 +1,4 @@
-import { IProduct } from "../interfaces/product.interface";
+import { IProduct } from "../../interfaces/v1/product.interface.ts";
 import fs from "fs/promises";
 
 export class ProductService {

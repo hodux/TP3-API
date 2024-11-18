@@ -54,9 +54,9 @@ export class ProductController {
                 return res.status(400).send("La quantité doit être un entier positif");
             }
 
-            await ProductService.addProduct(newProduct);
+            const createdProduct = await ProductService.addProduct(newProduct);
             logger.info("POST Produit: Succès")
-            res.status(201).json({ message: 'Produit ajouté avec succès' });
+            res.status(201).json(createdProduct);
         } catch (error) {
             logger.warn("POST Produits: Requête invalide", error)
             return res.status(400).json({ message: 'Requête invalide', error });
@@ -69,29 +69,31 @@ export class ProductController {
             const newProduct = req.body;
 
             // regex
-            const nameRegex : RegExp = /^[A-Za-z\s]{3,50}$/;
-            const priceRegex : RegExp = /^\d+(\.\d+)?$/;
-            const quantityRegex : RegExp = /^\d+$/;
+            const nameRegex: RegExp = /^[A-Za-z\s]{3,50}$/;
+            const priceRegex: RegExp = /^\d+(\.\d+)?$/;
+            const quantityRegex: RegExp = /^\d+$/;
 
             if (verifyRegex(newProduct.name, nameRegex)) {
-                logger.warn("PUT Produits: Requête invalide")
+                logger.warn("PUT Produits: Requête invalide");
                 return res.status(400).send("Le nom des produits doit contenir entre 3 et 50 caractères, uniquement des lettres et des espaces");
             } else if (verifyRegex(newProduct.price, priceRegex)) {
-                logger.warn("PUT Produits: Requête invalide")
+                logger.warn("PUT Produits: Requête invalide");
                 return res.status(400).send("Le prix doit être un nombre positif");
             } else if (verifyRegex(newProduct.quantity, quantityRegex)) {
-                logger.warn("PUT Produits: Requête invalide")
+                logger.warn("PUT Produits: Requête invalide");
                 return res.status(400).send("La quantité doit être un entier positif");
             }
 
-            await ProductService.modifyProductFromId(requestedId, newProduct);
-            logger.info("PUT Produit: Succès")
-            res.status(200).json({ message: 'Produit modifié avec succès' });
-        } catch (error : any) {
-            logger.warn("PUT Produits: Produit non trouvé", error)
+            const updatedProduct = await ProductService.modifyProductFromId(requestedId, newProduct);
+            logger.info("PUT Produit: Succès");
+
+            res.status(200).json(updatedProduct);
+        } catch (error: any) {
+            logger.warn("PUT Produits: Produit non trouvé", error);
             return res.status(404).json({ message: 'Produit non trouvé', error: error.message });
         }
     }
+
 
     public static async deleteProductById(req: Request, res: Response) {
         try {

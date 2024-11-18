@@ -1,4 +1,4 @@
-import { User } from '../interfaces/user.interface';
+import { User } from '../../interfaces/v1/user.interface.ts';
 import fs from "fs/promises";
 
 export class UserService {

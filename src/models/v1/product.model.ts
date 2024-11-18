@@ -1,4 +1,4 @@
-import { IProduct } from '../interfaces/product.interface';
+import { IProduct } from '../../interfaces/v1/product.interface.ts';
 
 export class Product implements IProduct {
     constructor(

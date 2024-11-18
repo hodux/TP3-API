@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { AuthService } from '../services/auth.service.ts';
-import { verifyRegex } from '../utils/regex.ts'
-import { logger } from '../utils/logger'
+import { AuthService } from '../../services/v1/auth.service.ts';
+import { verifyRegex } from '../../utils/regex.ts'
+import { logger } from '../../utils/logger.ts'
 
 const router = Router();
 

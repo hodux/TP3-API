@@ -1,6 +1,5 @@
 import {IProduct} from "../../interfaces/v2/product.interface";
 import {Product} from "../../models/v2/product.model.ts";
-import mongoose from "mongoose";
 
 export class ProductService {
 
@@ -12,7 +11,7 @@ export class ProductService {
         }
     }
 
-    public static async addProduct(newProduct: IProduct): Promise<void> {
+    public static async addProduct(newProduct: IProduct): Promise<IProduct> {
         try {
 
             const product = new Product({
@@ -23,9 +22,9 @@ export class ProductService {
                 quantity: newProduct.quantity
             });
 
-            console.log("Mongoose connection:", mongoose.connection.readyState);
+            // console.log("Mongoose connection:", mongoose.connection.readyState);
 
-            await product.save();
+            return await product.save();
 
         } catch (error) {
             throw error;
@@ -33,7 +32,7 @@ export class ProductService {
 
     }
 
-    public static async modifyProductFromId(requestedId : any, newProduct: IProduct): Promise<void> {
+    public static async modifyProductFromId(requestedId: any, newProduct: IProduct): Promise<IProduct | null> {
         try {
             const updatedProduct = await Product.findByIdAndUpdate(
                 requestedId,
@@ -49,11 +48,12 @@ export class ProductService {
                 { new: true }
             );
 
+            return updatedProduct;
         } catch (error) {
             throw error;
         }
-
     }
+
 
     public static async deleteProductFromId(requestedId : any): Promise<void> {
         try {

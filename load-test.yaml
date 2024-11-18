@@ -1,0 +1,41 @@
+# Bearer token has to be manually updated each time because of expiration, couldn't figure out how to dynamically update it
+
+config:
+  target: 'https://localhost:3000'
+  phases:
+    - duration: 30
+      arrivalRate: 5
+
+scenarios:
+  - flow:
+      - get:
+          url: '/v2/products'
+
+      - post:
+          url: '/v2/products'
+          json:
+            name: "headcrab"
+            description: "headcrab plushie"
+            category: "plushies"
+            quantity: 10
+            price: 45.99
+
+          headers:
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Imdlc3Rpb25uYWlyZSIsImlhdCI6MTczMTg3OTM0MywiZXhwIjoxNzMxODgyOTQzfQ.YBXkqvvzEz6u4WWBtxK7XO8cMYcH2iHSkK6nNw2ixQ4"
+
+      - put:
+          url: '/v2/products/67382ed465c3082246aa60e1'
+          json:
+            name: "updated product"
+            description: "updated description"
+            category: "updated category"
+            quantity: 15
+            price: 45.99
+
+          headers:
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Imdlc3Rpb25uYWlyZSIsImlhdCI6MTczMTg3OTM0MywiZXhwIjoxNzMxODgyOTQzfQ.YBXkqvvzEz6u4WWBtxK7XO8cMYcH2iHSkK6nNw2ixQ4"
+
+      - delete:
+          url: '/v2/products/6739254b61796df7ee789b4d'
+          headers:
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6Imdlc3Rpb25uYWlyZSIsImlhdCI6MTczMTg3OTM0MywiZXhwIjoxNzMxODgyOTQzfQ.YBXkqvvzEz6u4WWBtxK7XO8cMYcH2iHSkK6nNw2ixQ4"
